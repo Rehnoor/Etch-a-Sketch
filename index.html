@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-Sketch</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Welcome to Etch-a-Sketch!</h1>
+    <button id="btn">Change size</button>
+    <div id="square-container">
+        <!-- squares will be populated here -->
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', gridSetup(16));
+
+        function gridSetup(width) {
+            const cont = document.querySelector("#square-container");
+            for (let x = 0; x < width; x++) {
+                const row = document.createElement("div");
+                row.style.display = "flex";
+                for (let y = 0; y < width; y++) {
+                    const box = document.createElement("div");
+                    box.style.border = "solid";
+                    box.style.flexGrow = 1;
+                    box.style.flexShrink = 1;
+                    box.style.width = "20px";
+                    box.style.height = "20px";
+                    box.addEventListener('mouseover',(event) => {
+                        let randR = Math.floor(Math.random() * 255);
+                        let randG = Math.floor(Math.random() * 255);
+                        let randB = Math.floor(Math.random() * 255);
+                        box.style.backgroundColor = "rgb(" + randR + "," + randG + "," + randB + ")";
+                    });
+                    row.appendChild(box);
+                }
+                cont.appendChild(row);
+            }
+        }
+
+        document.getElementById("btn").addEventListener('click', (e) => {
+            let uResp = prompt("Please enter new grid size");
+            if (uResp > 100) {
+                alert("Please enter a grid value lesser than 100");
+                return;
+            }
+            if (uResp <= 0) {
+                alert("Please enter a value that is greater than 0");
+                return;
+            }
+            if (parseInt(uResp) === Number.NaN) {
+                alert("Please enter a number");
+                return;
+            }
+
+            const cont = document.querySelector("#square-container");
+
+            while(cont.firstChild) {
+                cont.removeChild(cont.firstChild);
+            }
+
+            gridSetup(uResp);
+        })
+    </script>
+</body>
+</html>
